@@ -4,7 +4,7 @@ import io
 import os
 
 
-INPUT_BUCKET = "p"
+INPUT_BUCKET = "bank-input-data"
 INPUT_KEY = "bank.csv"
 OUTPUT_BUCKET = "bank-output-data"
 OUTPUT_KEY = "bank_cleaned.csv"
@@ -16,10 +16,7 @@ df = pd.read_csv(io.BytesIO(response['Body'].read()))
 
 
 
-
 df.drop(columns=['contact', 'poutcome'], inplace=True)
-
-
 df.replace("unknown", pd.NA, inplace=True)
 df.dropna(subset=['job', 'education'], inplace=True)
 
@@ -30,11 +27,7 @@ df['age_group'] = pd.cut(df['age'], bins=age_bins, labels=age_labels)
 
 
 df['has_previous_contact'] = df['previous'] > 0
-
-
 df['last_contact_date'] = df['day'].astype(str) + '-' + df['month'].str.title()
-
-
 df['is_high_balance'] = df['balance'] > 1000
 
 
